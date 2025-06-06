@@ -2,6 +2,7 @@ using System;
 using Unity.Services.Core;
 using Unity.Services.Vivox;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class VivoxManager : MonoBehaviour
 {
@@ -11,11 +12,11 @@ public class VivoxManager : MonoBehaviour
         await VivoxService.Instance.InitializeAsync();
 
         LoginOptions options = new();
-        options.DisplayName = "Test Name";
+        options.DisplayName = $"Test Name {Random.Range(0, 100f)}{Random.Range(0,100f)}";
         await VivoxService.Instance.LoginAsync(options);
 
         ChannelOptions channelOptions = new();
         channelOptions.MakeActiveChannelUponJoining = true;
-        await VivoxService.Instance.JoinEchoChannelAsync("test", ChatCapability.AudioOnly, channelOptions);
+        await VivoxService.Instance.JoinGroupChannelAsync("test", ChatCapability.AudioOnly, channelOptions);
     }
 }
