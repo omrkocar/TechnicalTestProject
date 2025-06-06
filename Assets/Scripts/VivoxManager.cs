@@ -7,8 +7,10 @@ using Random = UnityEngine.Random;
 public class VivoxManager : MonoBehaviour
 {
     private ChannelOptions channelOptions;
+    private Transform cam;
     private async void Start()
     {
+        cam = Camera.main.transform;
         await UnityServices.Instance.InitializeAsync();
         await VivoxService.Instance.InitializeAsync();
 
@@ -45,5 +47,11 @@ public class VivoxManager : MonoBehaviour
 
         };
         await VivoxService.Instance.JoinPositionalChannelAsync("test", ChatCapability.AudioOnly, channel3dProperties, channelOptions);
+    }
+
+    private void Update()
+    {
+        Vector3 pos = cam.position;
+        VivoxService.Instance.Set3DPosition(pos, pos, cam.forward, cam.up, "test");
     }
 }
