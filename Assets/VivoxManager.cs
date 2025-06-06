@@ -11,6 +11,12 @@ public class VivoxManager : MonoBehaviour
     private Transform cam;
 
     private bool inPositionalChannel;
+    private ConfigManager configManager;
+
+    private void Awake()
+    {
+        configManager = GetComponent<ConfigManager>();
+    }
 
     private void Start()
     {
@@ -37,14 +43,14 @@ public class VivoxManager : MonoBehaviour
     {
         inPositionalChannel = false;
         await VivoxService.Instance.LeaveAllChannelsAsync();
-        await VivoxService.Instance.JoinEchoChannelAsync("echo", ChatCapability.AudioOnly, channelOptions);
+        await VivoxService.Instance.JoinEchoChannelAsync(configManager.channelname, ChatCapability.AudioOnly, channelOptions);
     }
     
     public async void JoinGroupChannel()
     {
         inPositionalChannel = false;
         await VivoxService.Instance.LeaveAllChannelsAsync();
-        await VivoxService.Instance.JoinGroupChannelAsync("group", ChatCapability.AudioOnly, channelOptions);
+        await VivoxService.Instance.JoinGroupChannelAsync(configManager.channelname, ChatCapability.AudioOnly, channelOptions);
     }
     
     public async void JoinPositionalChannel()
@@ -56,7 +62,7 @@ public class VivoxManager : MonoBehaviour
         {
 
         };
-        await VivoxService.Instance.JoinPositionalChannelAsync("positional", ChatCapability.AudioOnly, channel3dProperties, channelOptions);
+        await VivoxService.Instance.JoinPositionalChannelAsync(configManager.channelname, ChatCapability.AudioOnly, channel3dProperties, channelOptions);
         inPositionalChannel = true;
     }
 
@@ -66,6 +72,6 @@ public class VivoxManager : MonoBehaviour
             return;
         
         Vector3 pos = cam.position;
-        VivoxService.Instance.Set3DPosition(pos, pos, cam.forward, cam.up, "positional");
+        VivoxService.Instance.Set3DPosition(pos, pos, cam.forward, cam.up, configManager.channelname);
     }
 }

@@ -6,7 +6,13 @@ using UnityEngine;
 
 public class ConfigManager : MonoBehaviour
 {
-    public struct userAttributes {}
+    public struct userAttributes
+    {
+        
+    }
+
+    public string channelname;
+    
     public struct appAttributes {}
     
     public async Task Initialize()
@@ -18,6 +24,6 @@ public class ConfigManager : MonoBehaviour
 
     void ApplyRemoteSettings(ConfigResponse configResponse)
     {
-        Debug.Log("RemoteConfigService.Instance.appConfig fetched: " + RemoteConfigService.Instance.appConfig.config.ToString());
+        channelname = RemoteConfigService.Instance.appConfig.GetString("Channel Name", "error channel");
     }
 }
